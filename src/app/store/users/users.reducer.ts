@@ -30,11 +30,8 @@ export const usersReducer = createReducer(
   })),
   on(UsersActions.loadUserDetailsSuccess, (state, { user }) => {
     const existing = state.entities[user.id];
-    if (
-      user.name === 'Unknown' &&
-      existing &&
-      existing.name !== 'Unknown'
-    ) {
+    // Don't overwrite an existing user with API data (e.g. after name was edited)
+    if (existing && existing.name !== 'Unknown') {
       return state;
     }
     return usersAdapter.upsertOne(user, state);

@@ -6,11 +6,13 @@ import {
   selectAllUsers,
   selectSelectedUserId,
   selectNextUserId,
+} from '../../store/users/users.selectors';
+import {
   setSelectedUserId,
   addUser,
   updateUser,
   removeUser,
-} from '../../store';
+} from '../../store/users/users.actions';
 import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';

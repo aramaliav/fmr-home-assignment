@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectSelectedUserOrderSum } from '../../store';
+import { selectSelectedUserOrderSum } from '../../store/users/users.selectors';
 import { AsyncPipe } from '@angular/common';
 import type { Observable } from 'rxjs';
 

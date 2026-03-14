@@ -2,13 +2,9 @@ import { Component, OnInit, signal, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import {
-  selectAllOrders,
-  selectNextOrderId,
-  addOrder,
-  updateOrder,
-  removeOrder,
-} from '../../store';
+import { selectAllOrders } from '../../store/users/users.selectors';
+import { selectNextOrderId } from '../../store/orders/orders.selectors';
+import { addOrder, updateOrder, removeOrder } from '../../store/orders/orders.actions';
 import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';

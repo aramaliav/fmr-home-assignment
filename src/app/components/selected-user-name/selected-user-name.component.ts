@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectSelectedUserName } from '../../store';
+import { selectSelectedUserName } from '../../store/users/users.selectors';
 import { AsyncPipe } from '@angular/common';
 import type { Observable } from 'rxjs';
 
