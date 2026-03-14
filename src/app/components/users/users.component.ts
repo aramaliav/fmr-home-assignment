@@ -47,7 +47,6 @@ import type { User } from '../../models/user.model';
   styleUrl: './users.component.scss',
 })
 export class UsersComponent implements OnInit {
-  users$: Observable<User[]>;
   selectedUserId$: Observable<number | null>;
   nextUserId$: Observable<number>;
   usersDataSource = new MatTableDataSource<User>([]);
@@ -64,7 +63,6 @@ export class UsersComponent implements OnInit {
     private destroyRef: DestroyRef,
     private dialog: MatDialog
   ) {
-    this.users$ = this.store.select(selectAllUsers);
     this.selectedUserId$ = this.store.select(selectSelectedUserId);
     this.nextUserId$ = this.store.select(selectNextUserId);
   }

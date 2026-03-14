@@ -61,47 +61,7 @@ export const selectSelectedUserOrderSum = createSelector(
   (summary) => summary.totalOrdersSum
 );
 
-export interface UserWithTotal {
-  id: number;
-  name: string;
-  totalOrdersSum: number;
-}
-
-export const selectUsersWithOrderTotals = createSelector(
-  selectAllUsers,
-  selectAllOrders,
-  (users, orders) =>
-    users.map((user) => {
-      const total = orders
-        .filter((o) => o.userId === user.id)
-        .reduce((sum, o) => sum + o.total, 0);
-      return { id: user.id, name: user.name, totalOrdersSum: total };
-    })
-);
-
 export const selectNextUserId = createSelector(selectAllUsers, (users) => {
   if (users.length === 0) return 1;
   return Math.max(...users.map((u) => u.id)) + 1;
 });
-
-export interface OrderWithUserName {
-  id: number;
-  userId: number;
-  userName: string;
-  total: number;
-}
-
-export const selectOrdersWithUserNames = createSelector(
-  selectAllOrders,
-  selectAllUsers,
-  (orders, users) =>
-    orders.map((order) => {
-      const owner = users.find((u) => u.id === order.userId);
-      return {
-        id: order.id,
-        userId: order.userId,
-        userName: owner?.name ?? '—',
-        total: order.total,
-      };
-    })
-);
