@@ -11,7 +11,6 @@ const MOCK_USERS: User[] = [
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  
   getUsers(): Observable<User[]> {
     return of(MOCK_USERS).pipe(delay(300));
   }

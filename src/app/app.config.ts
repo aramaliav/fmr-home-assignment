@@ -1,8 +1,10 @@
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
-  APP_INITIALIZER,
+  provideAppInitializer,
+  inject,
 } from '@angular/core';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
@@ -16,13 +18,6 @@ import { ordersFeatureKey } from './store/orders/orders.state';
 import { appEffects } from './store/effects.index';
 import { appInit } from './store/app.actions';
 
-export function initializeApp(store: Store) {
-  return () => {
-    store.dispatch(appInit());
-    return Promise.resolve();
-  };
-}
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -32,11 +27,9 @@ export const appConfig: ApplicationConfig = {
       [ordersFeatureKey]: ordersReducer,
     }),
     provideEffects(appEffects),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [Store],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      inject(Store).dispatch(appInit());
+      return Promise.resolve();
+    }),
   ],
 };

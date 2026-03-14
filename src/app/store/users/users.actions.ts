@@ -20,10 +20,6 @@ export const setSelectedUserId = createAction(
   props<{ id: number | null }>()
 );
 
-export const loadUserDetails = createAction(
-  '[Users] Load User Details',
-  props<{ userId: number }>()
-);
 export const loadUserDetailsSuccess = createAction(
   '[Users] Load User Details Success',
   props<{ user: User }>()

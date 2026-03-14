@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { SelectedUserNameComponent } from '../selected-user-name/selected-user-name.component';
 import { SelectedUserOrderSumComponent } from '../selected-user-order-sum/selected-user-order-sum.component';
 
@@ -9,7 +10,11 @@ import { SelectedUserOrderSumComponent } from '../selected-user-order-sum/select
 @Component({
   selector: 'app-user-orders-component',
   standalone: true,
-  imports: [SelectedUserNameComponent, SelectedUserOrderSumComponent],
+  imports: [
+    MatCardModule,
+    SelectedUserNameComponent,
+    SelectedUserOrderSumComponent,
+  ],
   templateUrl: './user-orders-component.component.html',
   styleUrl: './user-orders-component.component.scss',
 })

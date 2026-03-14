@@ -1,137 +1,169 @@
-/* You can add global styles to this file, and also import other style files */
+// Angular Material theme
+@use '@angular/material' as mat;
 
-// Material-like table & card (no library)
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$violet-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: 'Plus Jakarta Sans',
+    density: 0,
+  ));
+}
+
+// CSS custom properties for consistent modern palette
+:root {
+  --app-surface: #fafbff;
+  --app-surface-elevated: #ffffff;
+  --app-border: rgba(99, 102, 241, 0.12);
+  --app-text: #1e293b;
+  --app-text-muted: #64748b;
+  --app-accent: #6366f1;
+  --app-accent-light: rgba(99, 102, 241, 0.08);
+  --app-radius: 12px;
+  --app-radius-sm: 8px;
+  --app-shadow: 0 1px 3px rgba(30, 41, 59, 0.06);
+  --app-shadow-lg: 0 4px 20px rgba(30, 41, 59, 0.08);
+}
+
+body {
+  color-scheme: light;
+  background: var(--app-surface);
+  color: var(--app-text);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0;
+  height: 100%;
+}
 
 :host main,
 main {
   min-height: calc(100vh - 56px);
-  background: #f1f3f4;
+  background: var(--app-surface);
 }
 
 .page {
-  padding: 1.5rem 1.5rem 2rem;
-  max-width: 960px;
+  padding: 2rem 1.5rem 3rem;
+  max-width: 980px;
   margin: 0 auto;
 }
 
 .page-title {
-  margin: 0 0 1.25rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: #202124;
+  margin: 0 0 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--app-text);
 }
 
-.table-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.12), 0 4px 8px rgba(60, 64, 67, 0.08);
+/* Cards – modern elevated style */
+.mat-mdc-card {
+  background: var(--app-surface-elevated);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow);
+  border: 1px solid var(--app-border);
+  transition: box-shadow 0.2s ease;
+}
+
+.mat-mdc-card:hover {
+  box-shadow: var(--app-shadow-lg);
+}
+
+/* Table styling */
+table[mat-table] {
+  border-radius: var(--app-radius);
   overflow: hidden;
 }
 
-.mat-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-}
-
-.mat-table thead {
-  background: #f8f9fa;
-}
-
-.mat-table th {
-  padding: 14px 16px;
-  text-align: left;
-  font-size: 0.75rem;
+tr[mat-header-row] {
+  background: var(--app-surface-elevated);
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #5f6368;
-  border-bottom: 1px solid #e8eaed;
+  letter-spacing: 0.02em;
+
+  th[mat-header-cell] {
+    padding: 18px 24px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--app-text-muted);
+  }
 }
 
-.mat-table td {
-  padding: 14px 16px;
-  border-bottom: 1px solid #e8eaed;
-  color: #202124;
+tr[mat-row] {
+  background: var(--app-surface-elevated);
+  transition: background-color 0.15s ease;
+
+  td[mat-cell] {
+    padding: 16px 24px;
+    font-size: 0.9375rem;
+    background: var(--app-surface-elevated);
+  }
+
+  &:hover {
+    background: var(--app-accent-light);
+
+    td[mat-cell] {
+      background: var(--app-accent-light);
+    }
+  }
+
+  &.selected {
+    background: var(--app-accent-light);
+
+    td[mat-cell] {
+      background: var(--app-accent-light);
+    }
+  }
 }
 
-.mat-table tbody tr {
-  transition: background 0.12s ease;
+/* Form fields – rounded, refined */
+.mat-mdc-form-field .mdc-notched-outline .mdc-notched-outline__leading,
+.mat-mdc-form-field .mdc-notched-outline .mdc-notched-outline__notch,
+.mat-mdc-form-field .mdc-notched-outline .mdc-notched-outline__trailing {
+  border-radius: var(--app-radius-sm);
 }
 
-.mat-table tbody tr:hover {
-  background: #f8f9fa;
+.mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline__leading {
+  border-radius: var(--app-radius-sm) 0 0 var(--app-radius-sm);
 }
 
-.mat-table tbody tr:last-child td {
-  border-bottom: none;
+.mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-radius: 0 var(--app-radius-sm) var(--app-radius-sm) 0;
 }
 
-.mat-table .num {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
+/* Buttons – rounded */
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-flat-button {
+  border-radius: var(--app-radius-sm) !important;
 }
 
-.mat-table button {
-  padding: 6px 12px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.15s, box-shadow 0.15s;
+.mat-mdc-icon-button {
+  border-radius: 10px !important;
+  transition: background-color 0.2s ease;
 }
 
-.mat-table button:hover {
-  background: #e8eaed;
+/* Inline edit inputs */
+.edit-input {
+  padding: 8px 14px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-sm);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--app-accent);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
 }
 
-.mat-table .btn-primary {
-  background: #1a73e8;
-  color: #fff;
-}
-
-.mat-table .btn-primary:hover {
-  background: #1765cc;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.mat-table .btn-warn {
-  background: #fff;
-  color: #c5221f;
-  border: 1px solid #dadce0;
-}
-
-.mat-table .btn-warn:hover {
-  background: #fce8e6;
-}
-
-.mat-table tr.selected {
-  background: #e8f0fe;
-}
-
-.mat-table tr.selected:hover {
-  background: #d2e3fc;
-}
-
-.mat-table .edit-input {
-  padding: 6px 10px;
-  border: 1px solid #dadce0;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  width: 100%;
-  max-width: 12rem;
-}
-
-.mat-table .edit-input:focus {
-  outline: none;
-  border-color: #1a73e8;
-  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
-}
-
-.mat-table .actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+/* Dialog panel */
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: var(--app-radius) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
 }

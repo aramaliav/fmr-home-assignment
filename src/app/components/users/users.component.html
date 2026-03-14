@@ -3,97 +3,108 @@
 
   <app-user-orders-component />
 
-  <section class="add-user">
-    <h3>Add user</h3>
-    <div class="add-form">
-      <label>
-        <span>ID</span>
-        <input
-          type="number"
-          min="1"
-          [ngModel]="newUserId()"
-          (ngModelChange)="newUserId.set(+$event)"
-          name="newId"
-        />
-      </label>
-      <label>
-        <span>Name</span>
-        <input
-          type="text"
-          [ngModel]="newUserName()"
-          (ngModelChange)="newUserName.set($event)"
-          name="newName"
-          placeholder="User name"
-        />
-      </label>
-      <button type="button" class="btn-add" (click)="addUserForm()">Add</button>
-    </div>
-    <p class="hint">Next suggested ID: {{ nextUserId$ | async }}</p>
-  </section>
+  <mat-card class="add-user-card">
+    <mat-card-header>
+      <mat-card-title>Add user</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="add-form">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>ID</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            [ngModel]="newUserId()"
+            (ngModelChange)="newUserId.set(+$event)"
+            name="newId"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            [ngModel]="newUserName()"
+            (ngModelChange)="newUserName.set($event)"
+            name="newName"
+            placeholder="User name"
+          />
+        </mat-form-field>
+        <button mat-flat-button color="primary" (click)="addUserForm()">
+          Add
+        </button>
+      </div>
+      <p class="hint">Next suggested ID: {{ nextUserId$ | async }}</p>
+    </mat-card-content>
+  </mat-card>
 
-  <div class="table-card">
-  <table class="mat-table">
-    <thead>
-      <tr>
-        <th class="num">ID</th>
-        <th>Name</th>
-        <th>Actions</th>
-        <th>Edit order</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (row of users$ | async; track row.id) {
-        <tr
-          [class.selected]="(selectedUserId$ | async) === row.id"
-          [class.editing]="editingId() === row.id"
-          (click)="!editingId() && selectUser(row.id)"
-          role="button"
-          tabindex="0"
-        >
-          <td class="num">{{ row.id }}</td>
-          <td>
-            @if (editingId() === row.id) {
-              <input
-                type="text"
-                [ngModel]="editName()"
-                (ngModelChange)="editName.set($event)"
-                (keydown.enter)="saveEdit()"
-                (keydown.escape)="cancelEdit()"
-                class="edit-input"
-              />
-            } @else {
-              {{ row.name }}
-            }
-          </td>
-          <td class="actions">
-            @if (editingId() === row.id) {
-              <button type="button" class="btn-save" (click)="saveEdit()">Save</button>
-              <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
-            } @else {
-              <button type="button" class="btn-edit" (click)="startEdit(row)">Edit</button>
-              <button type="button" class="btn-delete" (click)="confirmDelete(row)">Delete</button>
-            }
-          </td>
-          <td>
-            <button type="button" class="btn-link" (click)="openDialog(row)">
-              Edit order
+  <mat-card class="table-card">
+    <table mat-table [dataSource]="usersDataSource" class="mat-elevation-z0">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let row" class="num">{{ row.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let row">
+          @if (editingId() === row.id) {
+            <input
+              matInput
+              type="text"
+              [ngModel]="editName()"
+              (ngModelChange)="editName.set($event)"
+              (keydown.enter)="saveEdit()"
+              (keydown.escape)="cancelEdit()"
+              class="edit-input"
+              (click)="$event.stopPropagation()"
+            />
+          } @else {
+            {{ row.name }}
+          }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
+          @if (editingId() === row.id) {
+            <button mat-icon-button (click)="saveEdit()" matTooltip="Save">
+              <mat-icon>check</mat-icon>
             </button>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
-  </div>
-
-  @if (dialogUser(); as user) {
-    <app-user-orders-dialog [user]="user" (closed)="closeDialog()" />
-  }
-
-  @if (confirmDeleteUser(); as user) {
-    <app-confirm-dialog
-      [message]="getDeleteConfirmMessage(user)"
-      (confirmed)="removeUserById(user.id)"
-      (cancelled)="cancelConfirmDelete()"
-    />
-  }
+            <button mat-icon-button (click)="cancelEdit()" matTooltip="Cancel">
+              <mat-icon>close</mat-icon>
+            </button>
+          } @else {
+            <button mat-icon-button (click)="startEdit(row)" matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="confirmDelete(row)" matTooltip="Delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="editOrder">
+        <th mat-header-cell *matHeaderCellDef>Edit order</th>
+        <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
+          <button mat-icon-button color="primary" (click)="openDialog(row)" matTooltip="Edit order">
+            <mat-icon>shopping_cart</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [class.selected]="(selectedUserId$ | async) === row.id"
+        [class.editing]="editingId() === row.id"
+        (click)="!editingId() && selectUser(row.id)"
+        class="clickable-row"
+      ></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          No users yet.
+        </td>
+      </tr>
+    </table>
+  </mat-card>
 </div>

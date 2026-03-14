@@ -5,7 +5,6 @@ export * from './users/users.adapter';
 export * from './users/users.effects';
 export * from './users/users.reducer';
 export * from './users/users.selectors';
-export type { UserWithTotal, OrderWithUserName } from './users/users.selectors';
 export * from './users/users.state';
 export * from './orders/orders.actions';
 export * from './orders/orders.adapter';
