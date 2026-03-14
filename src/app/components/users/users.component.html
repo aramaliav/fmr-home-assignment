@@ -1,0 +1,99 @@
+<div class="page users">
+  <h1 class="page-title">Users</h1>
+
+  <app-user-orders-component />
+
+  <section class="add-user">
+    <h3>Add user</h3>
+    <div class="add-form">
+      <label>
+        <span>ID</span>
+        <input
+          type="number"
+          min="1"
+          [ngModel]="newUserId()"
+          (ngModelChange)="newUserId.set(+$event)"
+          name="newId"
+        />
+      </label>
+      <label>
+        <span>Name</span>
+        <input
+          type="text"
+          [ngModel]="newUserName()"
+          (ngModelChange)="newUserName.set($event)"
+          name="newName"
+          placeholder="User name"
+        />
+      </label>
+      <button type="button" class="btn-add" (click)="addUserForm()">Add</button>
+    </div>
+    <p class="hint">Next suggested ID: {{ nextUserId$ | async }}</p>
+  </section>
+
+  <div class="table-card">
+  <table class="mat-table">
+    <thead>
+      <tr>
+        <th class="num">ID</th>
+        <th>Name</th>
+        <th>Actions</th>
+        <th>Edit order</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of users$ | async; track row.id) {
+        <tr
+          [class.selected]="(selectedUserId$ | async) === row.id"
+          [class.editing]="editingId() === row.id"
+          (click)="!editingId() && selectUser(row.id)"
+          role="button"
+          tabindex="0"
+        >
+          <td class="num">{{ row.id }}</td>
+          <td>
+            @if (editingId() === row.id) {
+              <input
+                type="text"
+                [ngModel]="editName()"
+                (ngModelChange)="editName.set($event)"
+                (keydown.enter)="saveEdit()"
+                (keydown.escape)="cancelEdit()"
+                class="edit-input"
+              />
+            } @else {
+              {{ row.name }}
+            }
+          </td>
+          <td class="actions">
+            @if (editingId() === row.id) {
+              <button type="button" class="btn-save" (click)="saveEdit()">Save</button>
+              <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+            } @else {
+              <button type="button" class="btn-edit" (click)="startEdit(row)">Edit</button>
+              <button type="button" class="btn-delete" (click)="confirmDelete(row)">Delete</button>
+            }
+          </td>
+          <td>
+            <button type="button" class="btn-link" (click)="openDialog(row)">
+              Edit order
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  </div>
+
+  @if (dialogUser(); as user) {
+    <app-user-orders-dialog [user]="user" (closed)="closeDialog()" />
+  }
+
+  @if (confirmDeleteUser(); as user) {
+    <app-confirm-dialog
+      [message]="getDeleteConfirmMessage(user)"
+      (confirmed)="removeUserById(user.id)"
+      (cancelled)="cancelConfirmDelete()"
+    />
+  }
+</div>

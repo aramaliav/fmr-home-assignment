@@ -1,1 +1,137 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Material-like table & card (no library)
+
+:host main,
+main {
+  min-height: calc(100vh - 56px);
+  background: #f1f3f4;
+}
+
+.page {
+  padding: 1.5rem 1.5rem 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.page-title {
+  margin: 0 0 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #202124;
+}
+
+.table-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.12), 0 4px 8px rgba(60, 64, 67, 0.08);
+  overflow: hidden;
+}
+
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.mat-table thead {
+  background: #f8f9fa;
+}
+
+.mat-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #5f6368;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.mat-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e8eaed;
+  color: #202124;
+}
+
+.mat-table tbody tr {
+  transition: background 0.12s ease;
+}
+
+.mat-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.mat-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.mat-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mat-table button {
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.mat-table button:hover {
+  background: #e8eaed;
+}
+
+.mat-table .btn-primary {
+  background: #1a73e8;
+  color: #fff;
+}
+
+.mat-table .btn-primary:hover {
+  background: #1765cc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.mat-table .btn-warn {
+  background: #fff;
+  color: #c5221f;
+  border: 1px solid #dadce0;
+}
+
+.mat-table .btn-warn:hover {
+  background: #fce8e6;
+}
+
+.mat-table tr.selected {
+  background: #e8f0fe;
+}
+
+.mat-table tr.selected:hover {
+  background: #d2e3fc;
+}
+
+.mat-table .edit-input {
+  padding: 6px 10px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  width: 100%;
+  max-width: 12rem;
+}
+
+.mat-table .edit-input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.mat-table .actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}

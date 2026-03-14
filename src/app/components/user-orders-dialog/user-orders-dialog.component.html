@@ -1,0 +1,66 @@
+<div class="dialog-backdrop" (click)="onBackdropClick($event)">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <header class="dialog-header">
+      <h2>Orders – {{ user().name }}</h2>
+      <button type="button" class="btn-close" (click)="close()">×</button>
+    </header>
+    <section class="add-order">
+      <h3>Add order</h3>
+      <div class="add-form">
+        <label>
+          <span>Total</span>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            [ngModel]="newTotal()"
+            (ngModelChange)="newTotal.set(+$event)"
+            name="newTotal"
+          />
+        </label>
+        <button type="button" class="btn-add" (click)="addOrderForm()">Add order</button>
+      </div>
+    </section>
+    <div class="table-card">
+      <table class="mat-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th class="num">Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of orders$ | async; track order.id) {
+            <tr [class.editing]="editingId() === order.id">
+              <td>{{ order.id }}</td>
+              <td class="num">
+                @if (editingId() === order.id) {
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    [ngModel]="editTotal()"
+                    (ngModelChange)="editTotal.set(+$event)"
+                    class="edit-input num"
+                  />
+                } @else {
+                  {{ order.total }}
+                }
+              </td>
+              <td class="actions">
+                @if (editingId() === order.id) {
+                  <button type="button" class="btn-save" (click)="saveEdit()">Save</button>
+                  <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+                } @else {
+                  <button type="button" class="btn-edit" (click)="startEdit(order)">Edit</button>
+                  <button type="button" class="btn-delete" (click)="removeOrderById(order)">Delete</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
